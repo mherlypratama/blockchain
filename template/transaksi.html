@@ -1,0 +1,27 @@
+<!-- Store this code in 'index.html' file inside the 'templates' folder-->
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title> transaksi </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body></br></br></br></br></br>
+  <div align="center">
+    <div align="center" class="border">
+      <div class="header">
+        <h1 class="word">transaksi</h1>
+      </div></br></br></br>
+      <div class="msg">{{ msg }}</div>
+      <h1 class="bottom">
+        Hi {{session.username}}!!</br></br> Transaksimu dengan {{session.recipient}}
+        <br>
+        dengan nominal {{session.amount}} Telah Berhasil
+      </h1></br></br></br>
+    </div>
+  </div>
+</body>
+
+</html>
