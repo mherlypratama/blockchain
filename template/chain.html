@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <div class="response">
+    <table>
+      <tr>
+        {% for header in heading %}
+        <th>{{ header }}</th>
+        {% endfor %}
+      </tr>
+      {% for nomor in b_list %}
+      <tr>
+        <th>{{indexnya[nomor]}}</th>
+        <th>{{hashnya[nomor]}}</th>
+        <th>{{pengirim[nomor]}}</th>
+        <th>{{penerima[nomor]}}</th>
+        <th>{{duit[nomor]}}</th>
+      </tr>
+      {% endfor %}
+
+
+    </table>
+
+  </div>
+  <div class="mt-8 md:flex md:items-center">
+    <a href="{{url_for('index')}}"
+      class="w-full text-center px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-700 rounded-md md:w-1/2 hover:bg-blue-800">
+      Kembali ke halaman utama
+    </a>
+  </div>
+
+</body>
+
+</html>

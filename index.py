@@ -50,32 +50,142 @@ def login():
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    msg = ''
+    # Check that the required fields are in the POST'ed data
+    # sender = request.form['sender']
+    # recipient = request.form['recipient']
+    # amount = request.form['amount']
+    # Create a new Transaction
+    # index = blockchain.new_transaction(
+    #     sender, recipient, amount)
+
+    # response = {'message': f'Transaction will be added to Block {index}'}
+
+    # last_block = blockchain.last_block
+
+    # # Forge the new Block by adding it to the chain
+    # previous_hash = blockchain.hash(last_block)
+    # block = blockchain.new_block(previous_hash)
+
+    # response = {
+    #     'message': "New Block Forged",
+    #     'index': block['index'],
+    #     'transactions': block['transactions'],
+    #     'previous_hash': block['previous_hash'],
+    # }
+
     if request.method == 'POST' and 'sender' in request.form and 'recipient' in request.form and 'amount' in request.form:
-        username = request.form['sender']
+        sender = request.form['sender']
         recipient = request.form['recipient']
         amount = request.form['amount']
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(
-            'SELECT * FROM tb_user WHERE username LIKE %s ', (username,))
-        account = cursor.fetchone()
-        if account:
-            session['loggedin'] = True
-            session['username'] = account['username']
-            session['recipient'] = recipient
-            session['amount'] = amount
-            msg = 'selamat'
-            return redirect(url_for('transaksi'))
-        else:
-            msg = 'Incorrect username / password !'
+        index = blockchain.new_transaction(sender, amount,  recipient)
+        last_block = blockchain.last_block
+        previous_hash = blockchain.hash(last_block)
+        block = blockchain.new_block(previous_hash)
 
-    return render_template('index.html', msg=msg)
+    # Forge the new Block by adding it to the chain
+        # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        # query = "INSERT INTO blockchainn(sender, recipient, amount) VALUES(%s,%s,%s)"
+        # values = (sender, recipient, amount,)
+        # cursor.execute(query, values)
+        # mysql.connection.commit()
+        # msg = 'You have successfully registered !'
+        # response = {
+        #     'message': "New Block Forged",
+        #     'index': block['index'],
+        #     'transactions': block['transactions'],
+        #     'previous_hash': block['previous_hash'],
+        # }
+
+        # return jsonify(response), 201
+        return redirect(url_for('transaksi'))
+
+    return render_template('index.html')
 
 
 @app.route('/transaksi', methods=['GET'])
 def transaksi():
-    msg = ''
-    return render_template('transaksi.html')
+    # response = {
+    #     'chain': blockchain.chain,
+    #     'length': len(blockchain.chain),
+    # }
+    if request.method == 'GET':
+
+        chain = blockchain.chain
+        panjang = len(blockchain.chain)
+        now = panjang-1
+
+        index = chain[now]["index"]
+        transactions = chain[now]["transactions"]
+        transactions2 = transactions[0]
+        hashh = chain[now]["previous_hash"]
+        sender = transactions2["sender"]
+        recipient = transactions2["recipient"]
+        amount = transactions2["amount_send"]
+        semua = {
+            'message': 'transaksi berhasil',
+            'index': index,
+            'hash': hashh,
+            'sender': sender,
+            'recipient': recipient,
+            'amount': amount,
+            'panjangnya': panjang
+
+        }
+
+    return render_template('transaksi.html', index=index, hashh=hashh, sender=sender, recipient=recipient, amount=amount)
+
+
+@app.route('/chain', methods=['GET'])
+def chain():
+    # response = {
+    #     'chain': blockchain.chain,
+    #     'length': len(blockchain.chain),
+    # }
+    if request.method == 'GET':
+        a = 1
+        b_list = []
+        b = 0
+        chain = blockchain.chain
+        panjang = len(blockchain.chain)
+        list_semua = []
+        pengirim = []
+        penerima = []
+        hashnya = []
+        indexnya = []
+        duit = []
+        heading = ["index", "previous hash",
+                   "pengirim", "penerima", "Jumlah transaksi"]
+        semuanya = []
+        while a < panjang:
+            index = chain[a]["index"]
+            transactions = chain[a]["transactions"]
+            transactions2 = transactions[0]
+            hashh = chain[a]["previous_hash"]
+
+            sender = transactions2["sender"]
+            recipient = transactions2["recipient"]
+            amount = transactions2["amount_send"]
+            indexnya.append(index)
+            hashnya.append(hashh)
+            pengirim.append(sender)
+            penerima.append(recipient)
+            duit.append(amount)
+            b_list.append(b)
+            b += 1
+
+            semua = {
+                'index': index,
+                'hash': hashh,
+                'sender': sender,
+                'recipient': recipient,
+                'amount': amount,
+                'panjangnya': panjang
+
+            }
+            list_semua.append(semua)
+            a += 1
+
+    return render_template('chain.html', b_list=b_list, indexnya=indexnya, hashnya=hashnya, pengirim=pengirim, penerima=penerima, duit=duit, heading=heading)
 
 
 @app.route('/logout')

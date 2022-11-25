@@ -87,10 +87,10 @@ class Smart_Blockchain:
 
             # Block Producer Smart Contract (bpsc)
             'bpsc': 'bpsc_wallet_address',
-            'amount_bpsc': amount * 0.00005,  # Transaction fees
+            'amount_bpsc': amount * 0,  # Transaction fees
 
             'recipient': recipient,
-            'amount_receive': amount * 0.99995,
+            'amount_receive': amount * 1,
         })
 
         return self.last_block['index'] + 1

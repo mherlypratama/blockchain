@@ -1,0 +1,37 @@
+<!-- Store this code in 'index.html' file inside the 'templates' folder-->
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title> Index </title>
+
+</head>
+
+<body>
+  <table>
+
+    <thead>
+      <tr>
+        {% for header in all_headers %}
+        <th>{{ header }}</th>
+        {% endfor %}
+      <tr>
+    </thead>
+
+    <tbody>
+      {% for row in all_rows %}
+      <tr>
+        {% for value in row %}
+        <td>{{ value }}</td>
+        {% endfor %}
+      <tr>
+        {% endfor %}
+    </tbody>
+
+  </table>
+
+
+</body>
+
+</html>
